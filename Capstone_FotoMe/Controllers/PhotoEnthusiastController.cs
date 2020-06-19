@@ -19,15 +19,22 @@ namespace Capstone_FotoMe.Controllers
         }
 
         // GET: PhotoEnthusiastController
-        public ActionResult Index()
+        public async Task<IActionResult> Index()
         {
             PhotoEnthusiast photoEnthusiast = new PhotoEnthusiast();
+            try
+            {
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                photoEnthusiast = _context.PhotoEnthusiasts.Where(p => p.IdentityUserId == userId).Single();
+            }
+            catch(Exception)
+            {
+                return RedirectToAction("Create");
 
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            photoEnthusiast = _context.PhotoEnthusiasts.Where(p => p.IdentityUserId == userId).Single();
-            
-                       
-            return View("CreatePhotoEnthusiast");
+            }
+            return View(photoEnthusiast);
+
+
         }
 
         // GET: PhotoEnthusiastController/Details/5
@@ -37,34 +44,27 @@ namespace Capstone_FotoMe.Controllers
         }
 
         // GET: PhotoEnthusiastController/Create
-        public ActionResult Create()
+        public IActionResult Create()
         {
             return View();
         }
 
         // POST: PhotoEnthusiastController/Create
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(PhotoEnthusiast photoEnthusiast)
         {
-
             if (ModelState.IsValid)
             {
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 photoEnthusiast.IdentityUserId = userId;
 
-                photoEnthusiast.AddressId = photoEnthusiast.Address.AddressId;
-
                 _context.Add(photoEnthusiast);
-
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
-
-
-
-
             }
             return View(photoEnthusiast);
-            
+
         }
 
         // GET: PhotoEnthusiastController/Edit/5
