@@ -111,5 +111,26 @@ namespace Capstone_FotoMe.Controllers
                 return View();
             }
         }
+
+        public async Task<ActionResult> FindPostRequestsNearMe()
+        {
+            return View();
+        }
+
+        public async Task<ActionResult> SearchPostsInMyArea()
+        {
+            return View();
+        }
+
+        public async Task<ActionResult> ViewMyFriends()
+        {
+            return View();
+        }
+
+        public async Task<ActionResult> PostAPhotoRequest()
+        {
+            return View();
+        }
+
     }
 }
