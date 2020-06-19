@@ -84,7 +84,7 @@ namespace Capstone_FotoMe.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return RedirectToAction("Create" , "PhotoEnthusiast");
+                    return RedirectToAction("Index" , "PhotoEnthusiast");
                 }
                 if (result.RequiresTwoFactor)
                 {

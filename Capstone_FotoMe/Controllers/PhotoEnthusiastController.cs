@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Capstone_FotoMe.ActionFilters;
 using Capstone_FotoMe.Data;
 using Capstone_FotoMe.Models;
 using Microsoft.AspNetCore.Http;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Capstone_FotoMe.Controllers
 {
+    //[ServiceFilter(typeof(GlobalRouting))]
     public class PhotoEnthusiastController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -46,13 +48,14 @@ namespace Capstone_FotoMe.Controllers
         // GET: PhotoEnthusiastController/Create
         public IActionResult Create()
         {
+            
             return View();
         }
 
         // POST: PhotoEnthusiastController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(PhotoEnthusiast photoEnthusiast)
+        public async Task<IActionResult> CreatePhotoEnthusiast(PhotoEnthusiast photoEnthusiast)
         {
             if (ModelState.IsValid)
             {

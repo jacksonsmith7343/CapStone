@@ -1,8 +1,26 @@
-﻿
+﻿@model Capstone_FotoMe.Models.PhotoEnthusiast
+
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Welcome @Html.DisplayFor(model => model.Name)!</h1>
 
+
+<body>
+
+    <ul>
+        <li> <a asp-action="Details" asp-route-id="@Model.PhotoEnthusiastId">Profile</a> |</li>
+        <br />
+        <br />
+        <li> <a asp-action="PostRequestsNearMe" asp-route-id="@Model.PhotoEnthusiastId">Post Requests Near Me</a> |</li>
+        <br />
+        <li> <a asp-action="SearchPostsInMyArea" asp-route-id="@Model.PhotoEnthusiastId">Search Photo Post Requests</a> |</li>
+        <br />
+        <li> <a asp-action="MyFriends" asp-route-id =" @Model.PhotoEnthusiastId">My Friend List</a> | </li>
+        <br />
+        <li> <a asp-action="PostAPhotoRequest" asp-route-id="@Model.PhotoEnthusiastId">Post a Photo Request</a> |</li>
+        
+    </ul>
+
+</body>
