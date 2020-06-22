@@ -1,0 +1,55 @@
+﻿@model Capstone_FotoMe.Models.PhotoEnthusiast
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>PhotoEnthusiast</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PriceForService)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PriceForService)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Rating)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Rating)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PostRequest)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PostRequest)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Money)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Money)
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Capstone_FotoMe.ActionFilters;
 using Capstone_FotoMe.Data;
 using Capstone_FotoMe.Models;
+using Capstone_FotoMe.Services;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+
 
 namespace Capstone_FotoMe.Controllers
 {
@@ -15,9 +17,13 @@ namespace Capstone_FotoMe.Controllers
     public class PhotoEnthusiastController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private IAPIService _apiCalls;
+        private IAPIService apiCalls;
+
         public PhotoEnthusiastController(ApplicationDbContext context)
         {
             _context = context;
+            _apiCalls = apiCalls;
         }
 
         // GET: PhotoEnthusiastController
@@ -40,10 +46,20 @@ namespace Capstone_FotoMe.Controllers
         }
 
         // GET: PhotoEnthusiastController/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int? id)
         {
-            return View();
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var photoEnthusiast = _context.PhotoEnthusiasts.Where(e => e.IdentityUserId == userId).SingleOrDefault();
+
+            if (photoEnthusiast == null)
+            {
+                return NotFound();
+            }
+
+            return View(photoEnthusiast);
+
         }
+
 
         // GET: PhotoEnthusiastController/Create
         public IActionResult Create()
@@ -69,6 +85,22 @@ namespace Capstone_FotoMe.Controllers
             return View(photoEnthusiast);
 
         }
+
+        // POST: PhotoEnthusiastController/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateAddressPhotoEnthusiast(Address address)
+        {
+            if (ModelState.IsValid)
+            {
+            
+            }
+            return View();
+
+        }
+
+
+
 
         // GET: PhotoEnthusiastController/Edit/5
         public ActionResult Edit(int id)
@@ -129,8 +161,10 @@ namespace Capstone_FotoMe.Controllers
 
         public async Task<ActionResult> PostAPhotoRequest()
         {
-            return View();
+
+            return View("CreatePostRequest");
         }
+        
 
     }
 }

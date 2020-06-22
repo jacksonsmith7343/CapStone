@@ -16,7 +16,7 @@ namespace Capstone_FotoMe.Services
     {
         public async Task<GeoCode> Geocoding(string address)
         {
-            string url = //find the url and api key for this 
+            string url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=" + APIKey.GoogleMapsAPI;
 
             HttpClient client = new HttpClient();
             HttpResponseMessage response = await client.GetAsync(url);
