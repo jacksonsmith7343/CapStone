@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,6 +9,9 @@ namespace Capstone_FotoMe.Models
 {
     public class PhotoRequestPost
     {
+        [Key]
+        public int PhotoRequestPostId { get; set; }
+        
         public DateTime DateOfRequest { get; set; }
 
         public int TimeRequired { get; set; }
@@ -16,9 +20,12 @@ namespace Capstone_FotoMe.Models
 
         public bool IsAccepted { get; set; }
 
-        [ForeignKey("IdentityUser")]
+        [ForeignKey("AddressId")]
         public int AddressId { get; set; }
+        public Address Address { get; set; }
 
+        [ForeignKey("PhotoEnthusiastId")]
+        public PhotoEnthusiast PhotoEnthusiast { get; set; }
         public int PhotoEnthusiastId { get; set; }
 
 

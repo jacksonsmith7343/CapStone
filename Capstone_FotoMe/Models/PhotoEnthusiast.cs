@@ -24,11 +24,15 @@ namespace Capstone_FotoMe.Models
 
        public double Money { get; set; }
 
+        [ForeignKey("AddressId")]
+        public Address Address { get; set; }
+
+        public int AddressId { get; set; }
+
 
 
         [ForeignKey("IdentityUser")]
-        public Address Address { get; set; }
-        public int AddressId { get; set; }
+
         public string IdentityUserId { get; internal set; }
     }
 }

@@ -43,6 +43,8 @@ namespace Capstone_FotoMe
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            //services.AddScoped<IAPIService, APICalls>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
