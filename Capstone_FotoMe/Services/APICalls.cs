@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 namespace Capstone_FotoMe.Services
 {
     
-    public class APICalls : ControllerBase
+    public class APICalls : IAPIService
     {
         public async Task<GeoCode> Geocoding(string address)
         {
