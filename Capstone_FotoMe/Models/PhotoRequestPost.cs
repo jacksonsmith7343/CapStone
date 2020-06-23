@@ -25,8 +25,9 @@ namespace Capstone_FotoMe.Models
         public Address Address { get; set; }
 
         [ForeignKey("PhotoEnthusiastId")]
+        public string PhotoEnthusiastId { get; set; }
         public PhotoEnthusiast PhotoEnthusiast { get; set; }
-        public int PhotoEnthusiastId { get; set; }
+        
 
 
     }

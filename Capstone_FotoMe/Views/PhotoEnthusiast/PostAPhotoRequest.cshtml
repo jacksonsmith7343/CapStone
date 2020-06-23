@@ -1,17 +1,17 @@
 ﻿@model Capstone_FotoMe.Models.PhotoRequestPost
 
 @{
-    ViewData["Title"] = "CreatePostRequest";
+    ViewData["Title"] = "PostAPhotoRequest";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>CreatePostRequest</h1>
+    <h1>Make a Post to have a Picture Taken Here!</h1>
 
-<h4>PhotoRequestPost</h4>
+<h4></h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="CreatePostRequest">
+        <form asp-action="PostAPhotoRequest">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="DateOfRequest" class="control-label"></label>
@@ -54,9 +54,9 @@
                 <span asp-validation-for="Address.Zip" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PhotoEnthusiastId" class="control-label"></label>
-                <input asp-for="PhotoEnthusiastId" class="form-control" />
-                <span asp-validation-for="PhotoEnthusiastId" class="text-danger"></span>
+                <label asp-for="PhotoEnthusiast.PhotoEnthusiastId" class="control-label"></label>
+                <input asp-for="PhotoEnthusiast.PhotoEnthusiastId" class="form-control" />
+                <span asp-validation-for="PhotoEnthusiast.PhotoEnthusiastId" class="text-danger"></span>
             </div>
             <input type="hidden" asp-for="PhotoEnthusiastId" />
             <input type="hidden" asp-for="AddressId" />

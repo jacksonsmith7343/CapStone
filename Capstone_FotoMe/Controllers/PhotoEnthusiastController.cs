@@ -64,14 +64,15 @@ namespace Capstone_FotoMe.Controllers
         // GET: PhotoEnthusiastController/Create
         public IActionResult Create()
         {
-            
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var photoEnthusiast = _context.PhotoEnthusiasts.Where(e => e.IdentityUserId == userId).SingleOrDefault();
             return View();
         }
 
         // POST: PhotoEnthusiastController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreatePhotoEnthusiast(PhotoEnthusiast photoEnthusiast)
+        public async Task<IActionResult> Create(PhotoEnthusiast photoEnthusiast)
         {
             if (ModelState.IsValid)
             {
@@ -85,22 +86,6 @@ namespace Capstone_FotoMe.Controllers
             return View(photoEnthusiast);
 
         }
-
-        // POST: PhotoEnthusiastController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateAddressPhotoEnthusiast(Address address)
-        {
-            if (ModelState.IsValid)
-            {
-            
-            }
-            return View();
-
-        }
-
-
-
 
         // GET: PhotoEnthusiastController/Edit/5
         public ActionResult Edit(int id)
@@ -162,7 +147,9 @@ namespace Capstone_FotoMe.Controllers
         public async Task<ActionResult> PostAPhotoRequest()
         {
 
-            return View("CreatePostRequest");
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var photoEnthusiast = _context.PhotoEnthusiasts.Where(e => e.PhotoEnthusiastId == userId).SingleOrDefault();
+            return View();
         }
 
         // POST: PhotoEnthusiastController/RequestPost
@@ -182,19 +169,16 @@ namespace Capstone_FotoMe.Controllers
                 _context.Add(photoRequestPost.Address);
                 await _context.SaveChangesAsync();
 
-                // _context.Address.Add(gardener.Address);
-
-                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 
 
-                photoRequestPost.AddressId = photoRequestPost.Address.AddressId;
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
                 _context.Add(photoRequestPost);
 
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View();
+            return View(photoRequestPost);
 
         }
 
