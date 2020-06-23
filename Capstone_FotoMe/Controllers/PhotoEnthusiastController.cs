@@ -164,7 +164,39 @@ namespace Capstone_FotoMe.Controllers
 
             return View("CreatePostRequest");
         }
-        
+
+        // POST: PhotoEnthusiastController/RequestPost
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> PostAPhotoRequest(PhotoRequestPost photoRequestPost)
+        {
+            if (ModelState.IsValid)
+            {
+                var geoAddress = photoRequestPost.Address.StreetAddress + ", " + photoRequestPost.Address.City + ", " + photoRequestPost.Address.State;
+                GeoCode geocode = await _apiCalls.GoogleGeocoding(geoAddress);
+                var lat = geocode.results[0].geometry.location.lat;
+                var lng = geocode.results[0].geometry.location.lng;
+
+                photoRequestPost.Address.Latitude = lat;
+                photoRequestPost.Address.Longitude = lng;
+                _context.Add(photoRequestPost.Address);
+                await _context.SaveChangesAsync();
+
+                // _context.Address.Add(gardener.Address);
+
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                
+
+                photoRequestPost.AddressId = photoRequestPost.Address.AddressId;
+
+                _context.Add(photoRequestPost);
+
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            return View();
+
+        }
 
     }
 }
