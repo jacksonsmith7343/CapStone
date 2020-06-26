@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Capstone_FotoMe.Data.Migrations
+namespace Capstone_FotoMe.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -46,7 +46,7 @@ namespace Capstone_FotoMe.Data.Migrations
 
                     b.HasKey("AddressId");
 
-                    b.ToTable("Address");
+                    b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("Capstone_FotoMe.Models.PhotoEnthusiast", b =>
@@ -63,7 +63,7 @@ namespace Capstone_FotoMe.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("IdentityUserId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<double>("Money")
                         .HasColumnType("float");
@@ -84,7 +84,43 @@ namespace Capstone_FotoMe.Data.Migrations
 
                     b.HasIndex("AddressId");
 
+                    b.HasIndex("IdentityUserId");
+
                     b.ToTable("PhotoEnthusiasts");
+                });
+
+            modelBuilder.Entity("Capstone_FotoMe.Models.PhotoRequestPost", b =>
+                {
+                    b.Property<int>("PhotoRequestPostId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AddressId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateOfRequest")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsAccepted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("MaxPrice")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PhotoEnthusiastId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TimeRequired")
+                        .HasColumnType("int");
+
+                    b.HasKey("PhotoRequestPostId");
+
+                    b.HasIndex("AddressId");
+
+                    b.HasIndex("PhotoEnthusiastId");
+
+                    b.ToTable("PhotoRequestPosts");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -292,6 +328,25 @@ namespace Capstone_FotoMe.Data.Migrations
                     b.HasOne("Capstone_FotoMe.Models.Address", "Address")
                         .WithMany()
                         .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
+                        .WithMany()
+                        .HasForeignKey("IdentityUserId");
+                });
+
+            modelBuilder.Entity("Capstone_FotoMe.Models.PhotoRequestPost", b =>
+                {
+                    b.HasOne("Capstone_FotoMe.Models.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Capstone_FotoMe.Models.PhotoEnthusiast", "PhotoEnthusiast")
+                        .WithMany()
+                        .HasForeignKey("PhotoEnthusiastId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

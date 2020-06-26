@@ -1,13 +1,30 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Capstone_FotoMe.Data.Migrations
+namespace Capstone_FotoMe.Migrations
 {
-    public partial class CreateIdentitySchema : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Addresses",
+                columns: table => new
+                {
+                    AddressId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StreetAddress = table.Column<string>(nullable: true),
+                    City = table.Column<string>(nullable: true),
+                    State = table.Column<string>(nullable: true),
+                    Zip = table.Column<int>(nullable: false),
+                    Latitude = table.Column<double>(nullable: false),
+                    Longitude = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Addresses", x => x.AddressId);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -52,7 +69,7 @@ namespace Capstone_FotoMe.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     RoleId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -73,7 +90,7 @@ namespace Capstone_FotoMe.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -153,6 +170,68 @@ namespace Capstone_FotoMe.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "PhotoEnthusiasts",
+                columns: table => new
+                {
+                    PhotoEnthusiastId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    PriceForService = table.Column<int>(nullable: false),
+                    Rating = table.Column<double>(nullable: false),
+                    PostRequest = table.Column<string>(nullable: true),
+                    Money = table.Column<double>(nullable: false),
+                    AddressId = table.Column<int>(nullable: false),
+                    IdentityUserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PhotoEnthusiasts", x => x.PhotoEnthusiastId);
+                    table.ForeignKey(
+                        name: "FK_PhotoEnthusiasts_Addresses_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Addresses",
+                        principalColumn: "AddressId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PhotoEnthusiasts_AspNetUsers_IdentityUserId",
+                        column: x => x.IdentityUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PhotoRequestPosts",
+                columns: table => new
+                {
+                    PhotoRequestPostId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DateOfRequest = table.Column<DateTime>(nullable: false),
+                    TimeRequired = table.Column<int>(nullable: false),
+                    MaxPrice = table.Column<int>(nullable: false),
+                    IsAccepted = table.Column<bool>(nullable: false),
+                    AddressId = table.Column<int>(nullable: false),
+                    PhotoEnthusiastId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PhotoRequestPosts", x => x.PhotoRequestPostId);
+                    table.ForeignKey(
+                        name: "FK_PhotoRequestPosts_Addresses_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Addresses",
+                        principalColumn: "AddressId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PhotoRequestPosts_PhotoEnthusiasts_PhotoEnthusiastId",
+                        column: x => x.PhotoEnthusiastId,
+                        principalTable: "PhotoEnthusiasts",
+                        principalColumn: "PhotoEnthusiastId",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -191,6 +270,26 @@ namespace Capstone_FotoMe.Data.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PhotoEnthusiasts_AddressId",
+                table: "PhotoEnthusiasts",
+                column: "AddressId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PhotoEnthusiasts_IdentityUserId",
+                table: "PhotoEnthusiasts",
+                column: "IdentityUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PhotoRequestPosts_AddressId",
+                table: "PhotoRequestPosts",
+                column: "AddressId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PhotoRequestPosts_PhotoEnthusiastId",
+                table: "PhotoRequestPosts",
+                column: "PhotoEnthusiastId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -211,7 +310,16 @@ namespace Capstone_FotoMe.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "PhotoRequestPosts");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "PhotoEnthusiasts");
+
+            migrationBuilder.DropTable(
+                name: "Addresses");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

@@ -15,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Capstone_FotoMe.ActionFilters;
+using Capstone_FotoMe.Services;
 
 namespace Capstone_FotoMe
 {
@@ -40,7 +41,7 @@ namespace Capstone_FotoMe
             {
                 config.Filters.Add(typeof(GlobalRouting));
             });
-
+            services.AddScoped<IAPIService, APICalls>();
             services.AddControllersWithViews();
             services.AddRazorPages();
 

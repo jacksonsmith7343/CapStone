@@ -1,6 +1,10 @@
-﻿namespace Capstone_FotoMe.Services
+﻿using Capstone_FotoMe.Models;
+using System.Threading.Tasks;
+
+namespace Capstone_FotoMe.Services
 {
-    public class IAPIService
+    public interface IAPIService
     {
+        Task<GeoCode> Geocoding(string address);
     }
 }

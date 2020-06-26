@@ -20,12 +20,12 @@ namespace Capstone_FotoMe.Models
 
         public bool IsAccepted { get; set; }
 
-        [ForeignKey("AddressId")]
+        [ForeignKey("Address")]
         public int AddressId { get; set; }
         public Address Address { get; set; }
 
-        [ForeignKey("PhotoEnthusiastId")]
-        public string PhotoEnthusiastId { get; set; }
+        [ForeignKey("PhotoEnthusiast")]
+        public int PhotoEnthusiastId { get; set; }
         public PhotoEnthusiast PhotoEnthusiast { get; set; }
         
 

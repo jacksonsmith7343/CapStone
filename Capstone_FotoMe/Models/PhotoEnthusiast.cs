@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -24,15 +25,17 @@ namespace Capstone_FotoMe.Models
 
        public double Money { get; set; }
 
-        [ForeignKey("AddressId")]
+        [ForeignKey("Address")]
+        public int AddressId { get; set; }
         public Address Address { get; set; }
 
-        public int AddressId { get; set; }
+
 
 
 
         [ForeignKey("IdentityUser")]
 
-        public string IdentityUserId { get; internal set; }
+        public string IdentityUserId { get; set; }
+        public IdentityUser IdentityUser { get; set; }
     }
 }

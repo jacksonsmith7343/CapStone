@@ -15,5 +15,7 @@ namespace Capstone_FotoMe.Data
         }
 
         public DbSet<PhotoEnthusiast> PhotoEnthusiasts { get; set; }
+        public DbSet<Address> Addresses { get; set; }
+        public DbSet<PhotoRequestPost> PhotoRequestPosts { get; set; }
     }
 }

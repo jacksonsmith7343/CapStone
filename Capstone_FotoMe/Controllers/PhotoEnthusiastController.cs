@@ -7,9 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 using Capstone_FotoMe.ActionFilters;
 using Capstone_FotoMe.Data;
 using Capstone_FotoMe.Models;
-using Capstone_FotoMe.Services;
-using Microsoft.AspNetCore.Http;
 
+using Microsoft.AspNetCore.Http;
+using System.Security.Cryptography.X509Certificates;
+using Capstone_FotoMe.Services;
 
 namespace Capstone_FotoMe.Controllers
 {
@@ -18,9 +19,8 @@ namespace Capstone_FotoMe.Controllers
     {
         private readonly ApplicationDbContext _context;
         private IAPIService _apiCalls;
-        private IAPIService apiCalls;
 
-        public PhotoEnthusiastController(ApplicationDbContext context)
+        public PhotoEnthusiastController(ApplicationDbContext context, IAPIService apiCalls)
         {
             _context = context;
             _apiCalls = apiCalls;
@@ -146,9 +146,6 @@ namespace Capstone_FotoMe.Controllers
 
         public async Task<ActionResult> PostAPhotoRequest()
         {
-
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var photoEnthusiast = _context.PhotoEnthusiasts.Where(e => e.PhotoEnthusiastId == userId).SingleOrDefault();
             return View();
         }
 
@@ -157,28 +154,37 @@ namespace Capstone_FotoMe.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PostAPhotoRequest(PhotoRequestPost photoRequestPost)
         {
+            //var errors = ModelState.Where(x => x.Value.Errors.Count > 0).Select(x => new { x.Key, x.Value.Errors }).ToArray();
+
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var photoEnthusiast = _context.PhotoEnthusiasts.Where(e => e.IdentityUserId == userId).SingleOrDefault();
+            photoRequestPost.PhotoEnthusiastId = photoEnthusiast.PhotoEnthusiastId;
+
+
+            
+
             if (ModelState.IsValid)
             {
                 var geoAddress = photoRequestPost.Address.StreetAddress + ", " + photoRequestPost.Address.City + ", " + photoRequestPost.Address.State;
-                GeoCode geocode = await _apiCalls.GoogleGeocoding(geoAddress);
+                GeoCode geocode = await _apiCalls.Geocoding(geoAddress);
                 var lat = geocode.results[0].geometry.location.lat;
                 var lng = geocode.results[0].geometry.location.lng;
 
                 photoRequestPost.Address.Latitude = lat;
                 photoRequestPost.Address.Longitude = lng;
-                _context.Add(photoRequestPost.Address);
+                _context.Addresses.Add(photoRequestPost.Address);
                 await _context.SaveChangesAsync();
 
-                
 
-                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-                _context.Add(photoRequestPost);
+                //var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                _context.PhotoRequestPosts.Add(photoRequestPost);
 
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View(photoRequestPost);
+            return View();
 
         }
 
