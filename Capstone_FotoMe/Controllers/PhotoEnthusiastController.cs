@@ -134,10 +134,43 @@ namespace Capstone_FotoMe.Controllers
             return View();
         }
 
+
+
+
+
+
+
+        public async Task<List<PhotoRequestPost>> GetAllPhotoRequestPosts()//use a loop to manage multiple objects
+        {
+            List<PhotoRequestPost> allPhotoRequestPosts = new List<PhotoRequestPost>();
+
+            return View();
+
+        }
+
         public async Task<ActionResult> SearchPostsInMyArea()
         {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var photoRequestPost = _context.PhotoEnthusiasts.Where(p => p.IdentityUserId == userId).SingleOrDefault();
+            var address = _context.Addresses.Where(a => a.AddressId == photoRequestPost.AddressId).SingleOrDefault();
+
+
+            var nearbyPhotoRequestPosts = await GetAllPhotoRequestPosts();
+            var photoRequestPostAddress = photoRequestPost.Address.State;
+            var matchedPhotoRequestPosts = nearbyPhotoRequestPosts.Where(m => m.Address.City == address).ToList();
+          
             return View();
+            
         }
+
+
+
+
+
+
+
+
+
 
         public async Task<ActionResult> ViewMyFriends()
         {
@@ -161,8 +194,6 @@ namespace Capstone_FotoMe.Controllers
             photoRequestPost.PhotoEnthusiastId = photoEnthusiast.PhotoEnthusiastId;
 
 
-            
-
             if (ModelState.IsValid)
             {
                 var geoAddress = photoRequestPost.Address.StreetAddress + ", " + photoRequestPost.Address.City + ", " + photoRequestPost.Address.State;
@@ -175,18 +206,12 @@ namespace Capstone_FotoMe.Controllers
                 _context.Addresses.Add(photoRequestPost.Address);
                 await _context.SaveChangesAsync();
 
-
-
-                //var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-
                 _context.PhotoRequestPosts.Add(photoRequestPost);
 
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("PhotoRequestPost");
             }
             return View();
-
         }
-
     }
 }

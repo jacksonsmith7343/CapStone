@@ -8,5 +8,6 @@ namespace Capstone_FotoMe
     public static class APIKey
     {
         public static readonly string GoogleMapsAPI = "AIzaSyAVn1ogH_Yfp_71FqPlUWqgOsbrJusdDGI";
+        
     }
 }
