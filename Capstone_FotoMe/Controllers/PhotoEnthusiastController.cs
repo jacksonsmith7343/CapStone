@@ -11,6 +11,7 @@ using Capstone_FotoMe.Models;
 using Microsoft.AspNetCore.Http;
 using System.Security.Cryptography.X509Certificates;
 using Capstone_FotoMe.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace Capstone_FotoMe.Controllers
 {
@@ -46,7 +47,7 @@ namespace Capstone_FotoMe.Controllers
         }
 
         // GET: PhotoEnthusiastController/Details/5
-        public async Task<ActionResult> Details(int? id)
+        public async Task<ActionResult> Details()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var photoEnthusiast = _context.PhotoEnthusiasts.Where(e => e.IdentityUserId == userId).SingleOrDefault();
@@ -129,37 +130,29 @@ namespace Capstone_FotoMe.Controllers
             }
         }
 
-        public async Task<ActionResult> FindPostRequestsNearMe()
-        {
-            return View();
-        }
+        //public async Task<List<PhotoRequestPost>> SearchPhotoEnthusiasts()
+        //{
+        //    List<PhotoEnthusiast> allPhotoEnthusiasts = new List<PhotoEnthusiast>();
 
+        //    return allPhotoEnthusiasts;
 
+        //}
 
-
-
-
-
-        public async Task<List<PhotoRequestPost>> GetAllPhotoRequestPosts()//use a loop to manage multiple objects
-        {
-            List<PhotoRequestPost> allPhotoRequestPosts = new List<PhotoRequestPost>();
-
-            return View();
-
-        }
-
-        public async Task<ActionResult> SearchPostsInMyArea()
+      
+        
+        
+        public async Task<ActionResult> PostRequestsNearMe()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var photoRequestPost = _context.PhotoEnthusiasts.Where(p => p.IdentityUserId == userId).SingleOrDefault();
-            var address = _context.Addresses.Where(a => a.AddressId == photoRequestPost.AddressId).SingleOrDefault();
+            var photoEnthusiast = _context.PhotoEnthusiasts.Where(p => p.IdentityUserId == userId).SingleOrDefault();
+            var address = _context.Addresses.Where(a => a.AddressId == photoEnthusiast.AddressId).SingleOrDefault();
 
 
-            var nearbyPhotoRequestPosts = await GetAllPhotoRequestPosts();
-            var photoRequestPostAddress = photoRequestPost.Address.State;
-            var matchedPhotoRequestPosts = nearbyPhotoRequestPosts.Where(m => m.Address.City == address).ToList();
+            var nearbyPhotoRequestPosts = _context.PhotoRequestPosts.Include(p => p.Address);
+            var photoEnthusiastAddress = photoEnthusiast.Address.State;
+            var matchedPhotoRequestPosts = nearbyPhotoRequestPosts.Where(m => m.Address.City == address.City).ToList();
           
-            return View();
+            return View(matchedPhotoRequestPosts);
             
         }
 
@@ -168,17 +161,27 @@ namespace Capstone_FotoMe.Controllers
 
 
 
-
-
-
-
-        public async Task<ActionResult> ViewMyFriends()
+        public async Task<ActionResult> GetAllPhotoEnthusiasts()
         {
+            var allPhotoEnthusiasts = _context.PhotoEnthusiasts;
+
+            return View(allPhotoEnthusiasts);
+        }
+
+
+
+
+        public async Task<ActionResult> AddFriend()
+        {
+
             return View();
         }
 
+
         public async Task<ActionResult> PostAPhotoRequest()
         {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var photoEnthusiast = _context.PhotoEnthusiasts.Where(e => e.IdentityUserId == userId).SingleOrDefault();
             return View();
         }
 
@@ -209,7 +212,7 @@ namespace Capstone_FotoMe.Controllers
                 _context.PhotoRequestPosts.Add(photoRequestPost);
 
                 await _context.SaveChangesAsync();
-                return RedirectToAction("PhotoRequestPost");
+                return RedirectToAction();
             }
             return View();
         }

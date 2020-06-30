@@ -15,6 +15,10 @@ namespace Capstone_FotoMe.Models
 
         public string Name { get; set; }
 
+        public bool SendFriendRequest { get; set; }
+
+        public bool IsAccepted { get; set; }
+
         public string Email { get; set; }
 
         public int PriceForService { get; set; }

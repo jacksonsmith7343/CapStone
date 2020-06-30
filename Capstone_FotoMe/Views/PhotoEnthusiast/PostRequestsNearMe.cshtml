@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Capstone_FotoMe.Models.PhotoRequestPost>
+
+@{
+    ViewData["Title"] = "PostRequestsNearMe";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Post Requests Near Me</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PhotoRequestPostId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfRequest)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeRequired)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaxPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsAccepted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AddressId)
+            </th>
+            <th>
+                Name
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhotoRequestPostId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfRequest)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeRequired)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaxPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsAccepted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhotoEnthusiast.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Send Friend Request", "AddFriend", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
