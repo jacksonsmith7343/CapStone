@@ -171,10 +171,30 @@ namespace Capstone_FotoMe.Controllers
 
 
 
-        public async Task<ActionResult> AddFriend()
+        public async Task<ActionResult> AddFriend(int id)
         {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var photoEnthusiast = _context.PhotoEnthusiasts.Where(e => e.PhotoEnthusiastId == id).SingleOrDefault();
+           // var friend = _context.PhotoEnthusiasts.Where(f => f.IdentityUserId == userId).SingleOrDefault();
 
-            return View();
+           
+            return View(photoEnthusiast);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> AddFriend(int id)
+        {
+            Friend friend = new Friend();
+
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var photoEnthusiast = _context.PhotoEnthusiasts.Where(e => e.IdentityUserId == userId).SingleOrDefault();
+            friend.RequesterPhotoEnthusiastId = photoEnthusiast.PhotoEnthusiastId;
+            friend.RequesteePhotoEnthusiastId = ;
+
+            var friends = _context.PhotoEnthusiasts.Where(f => f.IdentityUserId == userId).SingleOrDefault();
+
+
+            return View(friends);
         }
 
 

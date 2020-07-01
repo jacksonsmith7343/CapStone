@@ -7,9 +7,7 @@
 
 <h1>All Photo Enthusiasts</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
@@ -61,7 +59,7 @@
             
             <td>
                
-                @Html.ActionLink("Send Friend Request", "AddFriend", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Send Friend Request", "AddFriend", new {  id=item.PhotoEnthusiastId})
             </td>
         </tr>
 }

@@ -10,16 +10,26 @@
 <div>
     <h4>PhotoEnthusiast</h4>
     <hr />
-    <dl class="row">
-    
-        <dt class = "col-sm-2">
+    <div class="row">
+        <form asp-action="AddFriend">
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="SendFriendRequest" /> @Html.DisplayFor(model => model.PhotoEnthusiastId)
+                </label>
+            </div>
+            <input type="submit" value="send friend request" />
+        </form>
+    </div>
+        
+
+        @*<dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.SendFriendRequest)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.SendFriendRequest)
-        </dd>
-        
-<div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
-</div>
+        </dd>*@
+
+        <div>
+            @Html.ActionLink("Send Friend Request", "AddFriend", new {  id=Model.PhotoEnthusiastId, enthusiast = Model.IsAccepted })) |
+            <a asp-action="Index">Back to List</a>
+        </div>

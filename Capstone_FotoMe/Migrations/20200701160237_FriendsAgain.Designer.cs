@@ -4,14 +4,16 @@ using Capstone_FotoMe.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Capstone_FotoMe.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200701160237_FriendsAgain")]
+    partial class FriendsAgain
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,27 +49,6 @@ namespace Capstone_FotoMe.Migrations
                     b.HasKey("AddressId");
 
                     b.ToTable("Addresses");
-                });
-
-            modelBuilder.Entity("Capstone_FotoMe.Models.Friend", b =>
-                {
-                    b.Property<int>("FriendId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("IsAccepted")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("RequesteePhotoEnthusiastId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RequesterPhotoEnthusiastId")
-                        .HasColumnType("int");
-
-                    b.HasKey("FriendId");
-
-                    b.ToTable("Friends");
                 });
 
             modelBuilder.Entity("Capstone_FotoMe.Models.PhotoEnthusiast", b =>
