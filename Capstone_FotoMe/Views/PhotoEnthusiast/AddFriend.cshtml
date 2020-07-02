@@ -17,6 +17,7 @@
                     <input class="form-check-input" asp-for="SendFriendRequest" /> @Html.DisplayFor(model => model.PhotoEnthusiastId)
                 </label>
             </div>
+
             <input type="submit" value="send friend request" />
         </form>
     </div>
@@ -29,7 +30,6 @@
             @Html.DisplayFor(model => model.SendFriendRequest)
         </dd>*@
 
-        <div>
-            @Html.ActionLink("Send Friend Request", "AddFriend", new {  id=Model.PhotoEnthusiastId, enthusiast = Model.IsAccepted })) |
-            <a asp-action="Index">Back to List</a>
-        </div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

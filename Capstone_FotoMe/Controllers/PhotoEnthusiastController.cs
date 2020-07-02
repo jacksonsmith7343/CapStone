@@ -182,19 +182,24 @@ namespace Capstone_FotoMe.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddFriend(int id)
+        public async Task<ActionResult> AddFriend(int id, bool IsAccepted)
         {
             Friend friend = new Friend();
 
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var photoEnthusiast = _context.PhotoEnthusiasts.Where(e => e.IdentityUserId == userId).SingleOrDefault();
+
+            var requestee = _context.PhotoEnthusiasts.Where(e => e.PhotoEnthusiastId == id).SingleOrDefault();
             friend.RequesterPhotoEnthusiastId = photoEnthusiast.PhotoEnthusiastId;
-            friend.RequesteePhotoEnthusiastId = ;
+            friend.RequesteePhotoEnthusiastId = requestee.PhotoEnthusiastId;
+            
 
-            var friends = _context.PhotoEnthusiasts.Where(f => f.IdentityUserId == userId).SingleOrDefault();
 
+            
+            _context.Friends.Add(friend);
+            await _context.SaveChangesAsync();
 
-            return View(friends);
+            return View();
         }
 
 
