@@ -273,5 +273,61 @@ namespace Capstone_FotoMe.Controllers
             }
             return View();
         }
+
+
+
+
+        /// <summary>
+        /// ////////////////////////////////////////////////////////////
+        /// </summary>
+        /// <returns></returns>
+
+        // GET
+        public ActionResult SearchByCriteria()//loads a page where user inputs values
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult> SearchByCriteria(SearchByCriteriaViewModel model) //query with the user input
+        {
+
+            var gardens = await GetAllGardens();
+
+            if (model.SearchByCost == true)
+            {
+                gardens = gardens.Where(g => g.cost == model.Cost).ToList();
+            }
+
+            if (model.SearchByOrganic == true)
+            {
+                model.Organic = true;
+                gardens = gardens.Where(g => g.organic == model.Organic).ToList();
+            }
+
+            if (model.SearchByPlotSize == true)
+            {
+                gardens = gardens.Where(g => g.plotSize == model.PlotSize).ToList();
+            }
+
+            if (model.SearchByZipCode == true)
+            {
+                gardens = gardens.Where(g => g.zip == model.ZipCode).ToList();
+            }
+
+            if (model.SearchByVolunteerOpportunities == true)
+            {
+                model.VolunteerOpportunities = true;
+                gardens = gardens.Where(g => g.volunteerOpportunities == model.VolunteerOpportunities).ToList();
+            }
+
+
+
+            return View("DisplaySearchResult", gardens);
+
+        }
+
+
     }
 }
