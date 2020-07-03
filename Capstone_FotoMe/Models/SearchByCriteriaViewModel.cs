@@ -25,6 +25,5 @@ namespace Capstone_FotoMe.Models
        public bool SearchByPrice { get; set; }
 
 
-
     }
 }

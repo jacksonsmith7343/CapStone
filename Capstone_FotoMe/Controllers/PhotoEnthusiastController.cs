@@ -277,10 +277,22 @@ namespace Capstone_FotoMe.Controllers
 
 
 
+
+
         /// <summary>
         /// ////////////////////////////////////////////////////////////
         /// </summary>
         /// <returns></returns>
+
+        public async ActionResult GetAllPhotoRequestPosts()//use a loop to manage multiple objects
+        {
+            //List<PhotoRequestPost> allPhotoRequestPosts = new List<PhotoRequestPost>();
+
+            var allPhotoRequestPosts = _context.PhotoRequestPosts;
+
+            return View();
+
+        }
 
         // GET
         public ActionResult SearchByCriteria()//loads a page where user inputs values
@@ -290,41 +302,28 @@ namespace Capstone_FotoMe.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult> SearchByCriteria(SearchByCriteriaViewModel model) //query with the user input
+        public async Task<ActionResult> SearchByCriteria(SearchByCriteriaViewModel model)
         {
 
-            var gardens = await GetAllGardens();
+            var photoRequestPosts = await GetAllPhotoRequestPosts();
 
-            if (model.SearchByCost == true)
+            if (model.SearchByPrice == true)
             {
-                gardens = gardens.Where(g => g.cost == model.Cost).ToList();
+                photoRequestPosts = photoRequestPosts.Where(p => p.Price == model.Price).ToList();
             }
 
-            if (model.SearchByOrganic == true)
+            if (model.SearchByRating == true)
             {
-                model.Organic = true;
-                gardens = gardens.Where(g => g.organic == model.Organic).ToList();
+
+                photoRequestPosts = photoRequestPosts.Where(p => p.Rating == model.Rating).ToList();
             }
 
-            if (model.SearchByPlotSize == true)
+            if (model.SearchByCity == true)
             {
-                gardens = gardens.Where(g => g.plotSize == model.PlotSize).ToList();
+                photoRequestPosts = photoRequestPosts.Where(p => p.City == model.City).ToList();
             }
 
-            if (model.SearchByZipCode == true)
-            {
-                gardens = gardens.Where(g => g.zip == model.ZipCode).ToList();
-            }
-
-            if (model.SearchByVolunteerOpportunities == true)
-            {
-                model.VolunteerOpportunities = true;
-                gardens = gardens.Where(g => g.volunteerOpportunities == model.VolunteerOpportunities).ToList();
-            }
-
-
-
-            return View("DisplaySearchResult", gardens);
+            return View("DisplaySearchResult", photoRequestPosts);
 
         }
 
