@@ -7,44 +7,16 @@
 
 <h1>Requests</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.PhotoEnthusiastId)
-            </th>
+            
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SendFriendRequest)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.IsAccepted)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PriceForService)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Rating)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PostRequest)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Money)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AddressId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdentityUserId)
             </th>
             <th></th>
         </tr>
@@ -52,43 +24,19 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhotoEnthusiastId)
-            </td>
+            
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SendFriendRequest)
-            </td>
+           
             <td>
                 @Html.DisplayFor(modelItem => item.IsAccepted)
             </td>
+           
             <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PriceForService)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Rating)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PostRequest)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Money)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AddressId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdentityUserId)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Accept Request", "AcceptRequest", new { /* id=item.PrimaryKey */ })
             </td>
         </tr>
 }

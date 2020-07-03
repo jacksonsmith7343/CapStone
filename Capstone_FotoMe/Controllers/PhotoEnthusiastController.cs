@@ -168,7 +168,41 @@ namespace Capstone_FotoMe.Controllers
             return View(allPhotoEnthusiasts);
         }
 
+        
+        public async Task<ActionResult> SeeRequests()
+        {
 
+            var allFriendRequests = _context.PhotoEnthusiasts.Where(r => r.SendFriendRequest == false);
+            return View(allFriendRequests);
+            
+        }
+
+        
+        [HttpPost]
+        public async Task<ActionResult> SeeRequests(int id)
+        {
+
+            var allFriendRequests = _context.PhotoEnthusiasts.Where(r => r.SendFriendRequest == false);
+            return View(allFriendRequests);
+
+        }
+
+        public async Task<ActionResult> AcceptRequest(int id)
+        {
+            var requestee = _context.PhotoEnthusiasts.Where(e => e.PhotoEnthusiastId == id).SingleOrDefault();
+
+          
+            return View();
+        }
+
+        //[HttpPost]
+        //public async Task<ActionResult> AcceptRequest()
+        //{
+        //    var requestee = _context.PhotoEnthusiasts.Where(e => e.PhotoEnthusiastId == id).SingleOrDefault();
+
+
+        //    return View();
+        //}
 
 
         public async Task<ActionResult> AddFriend(int id)
@@ -194,8 +228,6 @@ namespace Capstone_FotoMe.Controllers
             friend.RequesteePhotoEnthusiastId = requestee.PhotoEnthusiastId;
             
 
-
-            
             _context.Friends.Add(friend);
             await _context.SaveChangesAsync();
 
