@@ -161,12 +161,6 @@ namespace Capstone_FotoMe.Controllers
 
 
 
-        public async Task<ActionResult> GetAllPhotoEnthusiasts()
-        {
-            var allPhotoEnthusiasts = _context.PhotoEnthusiasts;
-
-            return View(allPhotoEnthusiasts);
-        }
 
         
         public async Task<ActionResult> SeeRequests()
@@ -283,19 +277,28 @@ namespace Capstone_FotoMe.Controllers
         /// ////////////////////////////////////////////////////////////
         /// </summary>
         /// <returns></returns>
+        /// 
 
-        public async ActionResult GetAllPhotoRequestPosts()//use a loop to manage multiple objects
+
+        public async Task<ActionResult> GetAllPhotoEnthusiasts()
         {
-            //List<PhotoRequestPost> allPhotoRequestPosts = new List<PhotoRequestPost>();
+            var allPhotoEnthusiasts = _context.PhotoEnthusiasts;
 
-            var allPhotoRequestPosts = _context.PhotoRequestPosts;
+            return View(allPhotoEnthusiasts);
+        }
 
-            return View();
+        public async Task<List<PhotoEnthusiast>> AllPhotoEnthusiasts()
+        {
+            List<PhotoEnthusiast> allPhotoEnthusiasts = new List<PhotoEnthusiast>();
+
+            //var allPhotoRequestPosts = _context.PhotoRequestPosts;
+
+            return allPhotoEnthusiasts;
 
         }
 
         // GET
-        public ActionResult SearchByCriteria()//loads a page where user inputs values
+        public ActionResult SearchByCriteria()
         {
             return View();
         }
@@ -305,25 +308,25 @@ namespace Capstone_FotoMe.Controllers
         public async Task<ActionResult> SearchByCriteria(SearchByCriteriaViewModel model)
         {
 
-            var photoRequestPosts = await GetAllPhotoRequestPosts();
+            var photoEnthusiasts = await AllPhotoEnthusiasts();
 
             if (model.SearchByPrice == true)
             {
-                photoRequestPosts = photoRequestPosts.Where(p => p.Price == model.Price).ToList();
+                photoEnthusiasts = photoEnthusiasts.Where(p => p.MaxPrice == model.Price).ToList();
             }
 
             if (model.SearchByRating == true)
             {
 
-                photoRequestPosts = photoRequestPosts.Where(p => p.Rating == model.Rating).ToList();
+                photoEnthusiasts = photoEnthusiasts.Where(p => p.Rating == model.Rating).ToList();
             }
 
             if (model.SearchByCity == true)
             {
-                photoRequestPosts = photoRequestPosts.Where(p => p.City == model.City).ToList();
+                photoEnthusiasts = photoEnthusiasts.Where(p => p.City == model.City).ToList();
             }
 
-            return View("DisplaySearchResult", photoRequestPosts);
+            return View("DisplaySearchResult", photoEnthusiasts);
 
         }
 
