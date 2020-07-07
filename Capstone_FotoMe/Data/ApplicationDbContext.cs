@@ -20,5 +20,6 @@ namespace Capstone_FotoMe.Data
         public DbSet<PhotoRequestPost> PhotoRequestPosts { get; set; }
 
         public DbSet<Friend> Friends { get; set; }
+
     }
 }

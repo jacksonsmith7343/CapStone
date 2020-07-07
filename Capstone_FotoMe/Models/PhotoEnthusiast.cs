@@ -41,5 +41,7 @@ namespace Capstone_FotoMe.Models
 
         public string IdentityUserId { get; set; }
         public IdentityUser IdentityUser { get; set; }
+        public string City { get; internal set; }
+        public double? Price { get; internal set; }
     }
 }

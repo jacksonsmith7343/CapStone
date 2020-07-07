@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Capstone_FotoMe.ActionFilters;
 using Capstone_FotoMe.Data;
 using Capstone_FotoMe.Models;
-
 using Microsoft.AspNetCore.Http;
 using System.Security.Cryptography.X509Certificates;
 using Capstone_FotoMe.Services;
@@ -280,53 +279,58 @@ namespace Capstone_FotoMe.Controllers
         /// 
 
 
-        public async Task<ActionResult> GetAllPhotoEnthusiasts()
-        {
-            var allPhotoEnthusiasts = _context.PhotoEnthusiasts;
+        //public async Task<ActionResult> GetAllPhotoEnthusiasts()
+        //{
+        //    var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //    var photoEnthusiast = _context.PhotoEnthusiasts.Where(p => p.IdentityUserId == userId).SingleOrDefault();
+        //    var photoEnthusiasts = _context.PhotoEnthusiasts;
 
-            return View(allPhotoEnthusiasts);
-        }
+        //    return View(photoEnthusiasts);
+        //}
 
-        public async Task<List<PhotoEnthusiast>> AllPhotoEnthusiasts()
-        {
-            List<PhotoEnthusiast> allPhotoEnthusiasts = new List<PhotoEnthusiast>();
+        //public async Task<List<PhotoEnthusiast>> AllPhotoEnthusiasts()
+        //{
+        //    List<PhotoEnthusiast> allPhotoEnthusiasts = new List<PhotoEnthusiast>();
 
-            //var allPhotoRequestPosts = _context.PhotoRequestPosts;
+        //    //var allPhotoRequestPosts = _context.PhotoRequestPosts;
 
-            return allPhotoEnthusiasts;
+        //    return allPhotoEnthusiasts;
 
-        }
+        //}
 
-        // GET
+        //GET
         public ActionResult SearchByCriteria()
         {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var model = _context.PhotoEnthusiasts.Where(p => p.IdentityUserId == userId).SingleOrDefault();
             return View();
         }
 
 
         [HttpPost]
-        public async Task<ActionResult> SearchByCriteria(SearchByCriteriaViewModel model)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SearchByCriteria(SearchByCriteriaViewModel model)
         {
 
-            var photoEnthusiasts = await AllPhotoEnthusiasts();
+            var photoEnthusiasts = _context.PhotoEnthusiasts;
 
             if (model.SearchByPrice == true)
             {
-                photoEnthusiasts = photoEnthusiasts.Where(p => p.MaxPrice == model.Price).ToList();
+                photoEnthusiasts = (DbSet<PhotoEnthusiast>)photoEnthusiasts.Where(p => p.Price == model.Price);
             }
 
             if (model.SearchByRating == true)
             {
 
-                photoEnthusiasts = photoEnthusiasts.Where(p => p.Rating == model.Rating).ToList();
+                photoEnthusiasts = (DbSet<PhotoEnthusiast>)photoEnthusiasts.Where(p => p.Rating == model.Rating);
             }
 
             if (model.SearchByCity == true)
             {
-                photoEnthusiasts = photoEnthusiasts.Where(p => p.City == model.City).ToList();
+                photoEnthusiasts = (DbSet<PhotoEnthusiast>)photoEnthusiasts.Where(p => p.City == model.City);
             }
 
-            return View("DisplaySearchResult", photoEnthusiasts);
+            return View(photoEnthusiasts.ToList());
 
         }
 

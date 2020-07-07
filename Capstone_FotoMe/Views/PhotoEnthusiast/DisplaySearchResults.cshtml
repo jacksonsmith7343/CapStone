@@ -1,0 +1,66 @@
+﻿@model IEnumerable<Capstone_FotoMe.Models.SearchByCriteriaViewModel>
+
+@{
+    ViewData["Title"] = "DisplaySearchResults";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>DisplaySearchResults</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SearchByCity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SearchByRating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SearchByPrice)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SearchByCity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SearchByRating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SearchByPrice)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
