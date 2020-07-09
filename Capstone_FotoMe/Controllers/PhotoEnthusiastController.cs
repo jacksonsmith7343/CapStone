@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Http;
 using System.Security.Cryptography.X509Certificates;
 using Capstone_FotoMe.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Hosting.Server.Features;
+using Microsoft.CodeAnalysis.Differencing;
 
 namespace Capstone_FotoMe.Controllers
 {
@@ -279,14 +281,14 @@ namespace Capstone_FotoMe.Controllers
         /// 
 
 
-        //public async Task<ActionResult> GetAllPhotoEnthusiasts()
-        //{
-        //    var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-        //    var photoEnthusiast = _context.PhotoEnthusiasts.Where(p => p.IdentityUserId == userId).SingleOrDefault();
-        //    var photoEnthusiasts = _context.PhotoEnthusiasts;
+        public async Task<ActionResult> GetAllPhotoEnthusiasts()
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var photoEnthusiast = _context.PhotoEnthusiasts.Where(p => p.IdentityUserId == userId).SingleOrDefault();
+            var photoEnthusiasts = _context.PhotoEnthusiasts;
 
-        //    return View(photoEnthusiasts);
-        //}
+            return View();
+        }
 
         //public async Task<List<PhotoEnthusiast>> AllPhotoEnthusiasts()
         //{
@@ -302,7 +304,8 @@ namespace Capstone_FotoMe.Controllers
         public ActionResult SearchByCriteria()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var model = _context.PhotoEnthusiasts.Where(p => p.IdentityUserId == userId).SingleOrDefault();
+            //var model = _context.PhotoEnthusiasts.Where(p => p.IdentityUserId == userId).SingleOrDefault();
+            var model = _context.PhotoEnthusiasts;
             return View();
         }
 
@@ -312,27 +315,49 @@ namespace Capstone_FotoMe.Controllers
         public async Task<IActionResult> SearchByCriteria(SearchByCriteriaViewModel model)
         {
 
-            var photoEnthusiasts = _context.PhotoEnthusiasts;
+            var photoEnthusiasts = _context.PhotoEnthusiasts.ToList();
+            var addresses = _context.Addresses;
+
 
             if (model.SearchByPrice == true)
             {
-                photoEnthusiasts = (DbSet<PhotoEnthusiast>)photoEnthusiasts.Where(p => p.Price == model.Price);
+                photoEnthusiasts = photoEnthusiasts.Where(p => p.PriceForService == model.Price).ToList();
             }
 
             if (model.SearchByRating == true)
             {
 
-                photoEnthusiasts = (DbSet<PhotoEnthusiast>)photoEnthusiasts.Where(p => p.Rating == model.Rating);
+                photoEnthusiasts = photoEnthusiasts.Where(p => p.Rating == model.Rating).ToList();
             }
 
             if (model.SearchByCity == true)
             {
-                photoEnthusiasts = (DbSet<PhotoEnthusiast>)photoEnthusiasts.Where(p => p.City == model.City);
+               
+                var matchingAddresses = addresses.Where(a => a.City == model.City);
+                //Declare a list/collection of PEs
+                //foreach through matchingaddresses and run this query on each address to find the corresponding PE
+                //Add photoEnthusiasts.Clear(); that PE to the list/collection you declared earlier
+                photoEnthusiasts.Clear();
+                foreach (Address address in matchingAddresses)
+                {
+                    var peToAdd = photoEnthusiasts.Where(p => p.AddressId == address.AddressId).FirstOrDefault();
+                    photoEnthusiasts.Add(peToAdd);
+                }
+                
             }
 
-            return View(photoEnthusiasts.ToList());
+            return View("GetAllPhotoEnthusiasts", photoEnthusiasts);
 
         }
+
+        
+        public async Task<IActionResult> UploadImage()
+        {
+
+            return View();
+        }
+
+
 
 
     }
